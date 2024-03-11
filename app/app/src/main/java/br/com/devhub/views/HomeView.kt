@@ -8,8 +8,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -38,6 +41,10 @@ fun homeView(navController: NavController) {
         navController.navigate("profile")
     }
 
+    fun navigateToPost() {
+        navController.navigate("post")
+    }
+
     Column(
         modifier = Modifier.fillMaxWidth().fillMaxHeight()
             .background(Sky50),
@@ -63,10 +70,25 @@ fun homeView(navController: NavController) {
         }
         Column(
             modifier = Modifier.padding(horizontal = 16.dp).fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             listPostsComponent(posts)
+            Row(
+                modifier = Modifier.padding(bottom = 32.dp).fillMaxWidth().requiredHeight(100.dp),
+                horizontalArrangement = Arrangement.End
+            ) {
+                Button(
+                    onClick = { navigateToPost() },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Sky600
+                    )
+                ) {
+                    Icon(
+                        Icons.Filled.Add,
+                        "add"
+                    )
+                }
+            }
         }
     }
 }
@@ -74,7 +96,11 @@ fun homeView(navController: NavController) {
 @Composable
 fun listPostsComponent(posts: List<Post>) {
     if(posts.isEmpty()) {
-        Box() {
+        Column (
+            modifier = Modifier.fillMaxWidth().fillMaxHeight(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Text(text = "Não há posts", fontSize = 24.sp)
         }
     } else {

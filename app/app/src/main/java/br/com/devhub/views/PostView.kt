@@ -3,18 +3,19 @@ package br.com.devhub.views
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBackIos
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -26,84 +27,90 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import br.com.devhub.ui.theme.Sky200
 import br.com.devhub.ui.theme.Sky50
 import br.com.devhub.ui.theme.Sky600
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun loginView(navController: NavController) {
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
+fun postView(navController: NavController) {
+    var title by remember { mutableStateOf("") }
+    var description by remember { mutableStateOf("") }
 
-    fun submitLoginData() {
+    fun navigateToHome() {
         navController.navigate("home")
     }
 
-    fun navigateToSignUp() {
-        navController.navigate("signup")
-    }
-
     Column(
-        modifier = Modifier.fillMaxWidth().fillMaxHeight()
-            .background(Sky200).padding(horizontal = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        modifier = Modifier.fillMaxSize()
+            .background(Sky50),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Row(
+            modifier = Modifier.background(Sky600).padding(12.dp).fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Button(
+                onClick = { navigateToHome() },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Transparent
+                )
+            ) {
+                Icon(
+                    Icons.Filled.ArrowBackIos,
+                    "arrow-back-ios",
+                )
+            }
+            Text(text = "DEV HUB", color = Color.White, fontSize = 24.sp)
+        }
         Column(
+            modifier = Modifier.padding(vertical = 12.dp, horizontal = 18.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             TextField(
-                value = email,
+                value = title,
                 onValueChange = {
-                    if (it.length <= 64) {
-                        email = it
+                    if (it.length <= 50) {
+                        title = it
                     }
                 },
-                label = { Text("E-mail:") },
+                label = { Text("Título (até 50 caracteres)") },
                 colors = TextFieldDefaults.textFieldColors(
                     containerColor = Sky50
                 ),
                 modifier = Modifier.border(
-                    1.dp, Sky600, RoundedCornerShape(12.dp)
+                    1.dp,
+                    Sky600,
+                    RoundedCornerShape(12.dp)
                 ).fillMaxWidth()
             )
             TextField(
-                value = password,
+                value = description,
                 onValueChange = {
-                    if (it.length <= 50) {
-                        password = it
+                    if (it.length <= 500) {
+                        description = it
                     }
                 },
-                label = { Text("Senha:") },
-                visualTransformation = PasswordVisualTransformation(),
+                label = { Text("Descrição (até 500 caracteres)") },
                 colors = TextFieldDefaults.textFieldColors(
                     containerColor = Sky50
                 ),
                 modifier = Modifier.border(
-                    1.dp, Sky600, RoundedCornerShape(12.dp)
-                ).fillMaxWidth()
+                    1.dp,
+                    Sky600,
+                    RoundedCornerShape(12.dp)
+                ).requiredHeight(300.dp).fillMaxWidth()
             )
             Button(
-                onClick = { submitLoginData() },
+                onClick = {},
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Sky600
                 )
             ) {
-                Text("Entrar")
-            }
-            Button(
-                onClick = { navigateToSignUp() },
-                modifier = Modifier.fillMaxWidth().background(Color.Transparent),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Transparent
-                )
-            ) {
-                Text("Não tem acesso. Cadastra-se")
+                Text("Criar post")
             }
         }
     }

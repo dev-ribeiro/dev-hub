@@ -16,6 +16,7 @@ import androidx.navigation.compose.rememberNavController
 import br.com.devhub.ui.theme.DevHubTheme
 import br.com.devhub.views.homeView
 import br.com.devhub.views.loginView
+import br.com.devhub.views.postView
 import br.com.devhub.views.profileView
 import br.com.devhub.views.signUpView
 
@@ -36,6 +37,7 @@ class MainActivity : ComponentActivity() {
                         composable("signup") { signUpView(navController) }
                         composable("home") { homeView(navController) }
                         composable("profile") { profileView(navController) }
+                        composable("post") { postView(navController) }
                     }
                 }
             }
