@@ -1,5 +1,6 @@
 package br.com.devhub.views
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -23,10 +24,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import br.com.devhub.dto.UserDTO
+import br.com.devhub.models.User
+import br.com.devhub.services.AuthenticationService
 import br.com.devhub.ui.theme.Sky200
 import br.com.devhub.ui.theme.Sky50
 import br.com.devhub.ui.theme.Sky600
@@ -34,18 +40,53 @@ import br.com.devhub.ui.theme.Sky600
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun signUpView(navController: NavController) {
+    val applicationContext = LocalContext.current
+    val authenticationService: AuthenticationService = viewModel()
+
     var firstName by remember { mutableStateOf("") }
     var lastName by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var cellPhone by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
-    fun submitSignUpData() {
-        navController.navigate("home")
+    fun emitToast(message: String) {
+        Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
     }
 
     fun navigateToLogin() {
         navController.navigate("login")
+    }
+
+    fun navigateToHome() {
+        navController.navigate("home")
+    }
+
+    fun submitSignUpData() {
+        val user = UserDTO(
+            firstName = firstName,
+            lastName = lastName,
+            email = email,
+            cellPhone = cellPhone,
+            password = password
+        )
+
+        if (user.firstName?.isBlank() == true || user.lastName?.isBlank() == true
+            || user.email?.isBlank() == true || user.password?.isBlank() == true
+        ) {
+            emitToast("Por favor, preencha todos os campos")
+            return
+        }
+
+        authenticationService.registerUser(
+            user = user,
+            onSuccess = {
+                emitToast("Sucesso")
+                navigateToHome()
+            },
+            onFailure = {
+                emitToast("Houve um erro")
+            }
+        )
     }
 
     Column(
@@ -64,7 +105,7 @@ fun signUpView(navController: NavController) {
                         firstName = it
                     }
                 },
-                label = { Text("Primeiro nome:") },
+                label = { Text("Primeiro nome: *") },
                 colors = TextFieldDefaults.textFieldColors(
                     containerColor = Sky50
                 ),
@@ -79,7 +120,7 @@ fun signUpView(navController: NavController) {
                         lastName = it
                     }
                 },
-                label = { Text("Sobrenome:") },
+                label = { Text("Sobrenome: *") },
                 colors = TextFieldDefaults.textFieldColors(
                     containerColor = Sky50
                 ),
@@ -94,7 +135,7 @@ fun signUpView(navController: NavController) {
                         email = it
                     }
                 },
-                label = { Text("E-mail:") },
+                label = { Text("E-mail: *") },
                 colors = TextFieldDefaults.textFieldColors(
                     containerColor = Sky50
                 ),
@@ -127,7 +168,7 @@ fun signUpView(navController: NavController) {
                         password = it
                     }
                 },
-                label = { Text("Senha: (até 50 caracteres)") },
+                label = { Text("Senha*: (até 50 caracteres)") },
                 visualTransformation = PasswordVisualTransformation(),
                 colors = TextFieldDefaults.textFieldColors(
                     containerColor = Sky50
