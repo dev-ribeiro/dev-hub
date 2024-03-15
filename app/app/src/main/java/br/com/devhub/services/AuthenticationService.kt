@@ -19,7 +19,7 @@ class AuthenticationService : ViewModel() {
     val authenticatedUser: State<User?> = _authenticatedUser
 
     val retrofit = Retrofit.Builder()
-        .baseUrl("http://192.168.1.36:3335/api/")
+        .baseUrl("http://192.168.1.36:8080/api/")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
