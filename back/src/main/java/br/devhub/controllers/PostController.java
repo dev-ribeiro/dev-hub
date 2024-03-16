@@ -1,5 +1,7 @@
 package br.devhub.controllers;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -26,4 +28,10 @@ public class PostController {
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
+	@PostMapping(path = "findall", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ResponseDTO<List<Post>>> findAll(@RequestBody PostDTO postDTO) {
+		var query = postService.findAll(postDTO);
+		var result = new ResponseDTO<List<Post>>(true, query.size(), query);
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}	
 }

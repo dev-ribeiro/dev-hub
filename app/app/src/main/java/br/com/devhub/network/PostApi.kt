@@ -10,4 +10,7 @@ import retrofit2.http.POST
 interface PostApi {
     @POST("post/create")
     suspend fun createPost(@Body post: PostDTO): Response<ResponseDTO<Post>>;
+
+    @POST("post/findall")
+    suspend fun findAll(@Body postDTO: PostDTO) : Response<ResponseDTO<List<Post>>>
 }

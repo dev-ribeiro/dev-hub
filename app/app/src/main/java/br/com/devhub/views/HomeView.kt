@@ -19,6 +19,8 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,17 +28,25 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import br.com.devhub.dto.PostDTO
 import br.com.devhub.models.Post
 import br.com.devhub.services.AuthenticationService
+import br.com.devhub.services.PostService
 import br.com.devhub.ui.theme.Sky50
 import br.com.devhub.ui.theme.Sky600
+import br.com.devhub.utils.enums.Direction
+import br.com.devhub.utils.messages.ToastService
 
 @Composable
 fun homeView(navController: NavController, authenticationService: AuthenticationService) {
-    var posts by remember { mutableStateOf(listOf<Post>()) }
+    val applicationContext = LocalContext.current
+    val postService: PostService = viewModel()
+    val toastService: ToastService = ToastService()
 
     fun navigateToProfile() {
         navController.navigate("profile")
@@ -46,12 +56,37 @@ fun homeView(navController: NavController, authenticationService: Authentication
         navController.navigate("post")
     }
 
+    LaunchedEffect(null) {
+        val to = PostDTO(
+            page = 1,
+            size = 10,
+            direction = Direction.DESC,
+            by = arrayListOf("createdAt")
+        )
+
+        postService.findAll(
+            postTO = to,
+            onSuccess = {
+                toastService.emitToast(
+                    "Posts recuperados com sucess",
+                    applicationContext
+                )
+            },
+            onFailure = {
+                toastService.emitToast(
+                    "Não foi possível recuperar os posts",
+                    applicationContext
+                )
+            }
+        )
+    }
+
     Column(
         modifier = Modifier.fillMaxWidth().fillMaxHeight()
             .background(Sky50),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Row (
+        Row(
             modifier = Modifier.background(Sky600).padding(12.dp).fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
@@ -73,7 +108,7 @@ fun homeView(navController: NavController, authenticationService: Authentication
             modifier = Modifier.padding(horizontal = 16.dp).fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            listPostsComponent(posts)
+            listPostsComponent(postService.posts)
             Row(
                 modifier = Modifier.padding(bottom = 32.dp).fillMaxWidth().requiredHeight(100.dp),
                 horizontalArrangement = Arrangement.End
@@ -96,8 +131,8 @@ fun homeView(navController: NavController, authenticationService: Authentication
 
 @Composable
 fun listPostsComponent(posts: List<Post>) {
-    if(posts.isEmpty()) {
-        Column (
+    if (posts.isEmpty()) {
+        Column(
             modifier = Modifier.fillMaxWidth().fillMaxHeight(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -105,6 +140,10 @@ fun listPostsComponent(posts: List<Post>) {
             Text(text = "Não há posts", fontSize = 24.sp)
         }
     } else {
-
+        for (post in posts) {
+            Row {
+                Text(post.title)
+            }
+        }
     }
 }
