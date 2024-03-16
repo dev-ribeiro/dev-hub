@@ -36,9 +36,8 @@ import br.com.devhub.ui.theme.Sky600
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun loginView(navController: NavController) {
+fun loginView(navController: NavController, authenticationService: AuthenticationService) {
     val applicationContext = LocalContext.current
-    val authenticationService: AuthenticationService = viewModel()
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }

@@ -20,14 +20,12 @@ public class AuthController {
 	private final AuthService authService;
 
 	@PostMapping(path = "register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ResponseDTO<UserDTO>> register(@RequestBody UserDTO userTO) {
-		var result = new ResponseDTO<UserDTO>(true, 1, authService.register(userTO));
-		return new ResponseEntity<>(result, HttpStatus.OK);
+	public ResponseEntity<UserDTO> register(@RequestBody UserDTO userTO) {
+		return new ResponseEntity<>(authService.register(userTO), HttpStatus.OK);
 	}
 	
 	@PostMapping(path = "login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ResponseDTO<UserDTO>> login(@RequestBody UserDTO userTO) {
-		var result = new ResponseDTO<UserDTO>(true, 1, authService.login(userTO));
-		return new ResponseEntity<>(result, HttpStatus.OK);
+	public ResponseEntity<UserDTO> login(@RequestBody UserDTO userTO) {
+		return new ResponseEntity<>(authService.login(userTO), HttpStatus.OK);
 	}
 }

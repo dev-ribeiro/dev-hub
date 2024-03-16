@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 @Primary
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
-	
 	private final PostRepository postRepository;
 
 	public Post createPost(PostDTO postDTO) {

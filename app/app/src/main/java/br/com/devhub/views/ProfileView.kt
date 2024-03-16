@@ -21,11 +21,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import br.com.devhub.services.AuthenticationService
 import br.com.devhub.ui.theme.Sky50
 import br.com.devhub.ui.theme.Sky600
 
 @Composable
-fun profileView(navController: NavController) {
+fun profileView(navController: NavController, authenticationService: AuthenticationService) {
     fun navigateToHome() {
         navController.navigate("home")
     }

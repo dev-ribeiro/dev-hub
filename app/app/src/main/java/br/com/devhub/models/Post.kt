@@ -6,7 +6,7 @@ data class Post(
     val id: String,
     val user: User,
     val title: String,
-    val content: String,
+    val description: String,
     val createdAt: Date,
     val updatedAt: Date
 )

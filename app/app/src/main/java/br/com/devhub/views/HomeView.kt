@@ -30,11 +30,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import br.com.devhub.models.Post
+import br.com.devhub.services.AuthenticationService
 import br.com.devhub.ui.theme.Sky50
 import br.com.devhub.ui.theme.Sky600
 
 @Composable
-fun homeView(navController: NavController) {
+fun homeView(navController: NavController, authenticationService: AuthenticationService) {
     var posts by remember { mutableStateOf(listOf<Post>()) }
 
     fun navigateToProfile() {

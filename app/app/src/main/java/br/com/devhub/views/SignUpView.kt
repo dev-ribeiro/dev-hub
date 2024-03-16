@@ -39,9 +39,8 @@ import br.com.devhub.ui.theme.Sky600
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun signUpView(navController: NavController) {
+fun signUpView(navController: NavController, authenticationService: AuthenticationService) {
     val applicationContext = LocalContext.current
-    val authenticationService: AuthenticationService = viewModel()
 
     var firstName by remember { mutableStateOf("") }
     var lastName by remember { mutableStateOf("") }

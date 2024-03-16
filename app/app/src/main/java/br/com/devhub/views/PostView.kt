@@ -27,20 +27,50 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import br.com.devhub.dto.PostDTO
+import br.com.devhub.services.AuthenticationService
+import br.com.devhub.services.PostService
 import br.com.devhub.ui.theme.Sky50
 import br.com.devhub.ui.theme.Sky600
+import br.com.devhub.utils.messages.ToastService
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun postView(navController: NavController) {
+fun postView(navController: NavController, authenticationService: AuthenticationService) {
+    val applicationContext = LocalContext.current
+
+    val postService: PostService = viewModel()
+    val toastService = ToastService()
+
     var title by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
 
     fun navigateToHome() {
         navController.navigate("home")
+    }
+
+    fun createPost() {
+        val user = authenticationService.authenticatedUser
+        user.value?.let {
+            val postTO = PostDTO(it, title, description)
+            postService.createPost(
+                postTO = postTO,
+                onSuccess = {
+                    toastService.emitToast("Post cadastrado com sucesso", applicationContext)
+                    title = ""
+                    description = ""
+                    navigateToHome()
+                },
+                onFailure = {
+                    toastService.emitToast("Não foi possível cadastrar o post", applicationContext  )
+                }
+            );
+        }
     }
 
     Column(
@@ -104,7 +134,7 @@ fun postView(navController: NavController) {
                 ).requiredHeight(300.dp).fillMaxWidth()
             )
             Button(
-                onClick = {},
+                onClick = { createPost() },
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Sky600
