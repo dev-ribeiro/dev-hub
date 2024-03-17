@@ -10,11 +10,11 @@ Planejar e arquitetar um sistema completo de redes sociais
 
 ## Requisitos funcionais
 
-[ ] Deve ser possível se cadastrar no sistema
+[X] Deve ser possível se cadastrar no sistema
 
-[ ] Deve ser possível fazer login com email ou telefone
+[X] Deve ser possível fazer login com email
 
-[ ] Deve ser possível um usuário autenticado fazer um post
+[X] Deve ser possível um usuário autenticado fazer um post
 
 [ ] Deve ser possível um usuário autenticado fazer um comentário
 
@@ -26,7 +26,7 @@ Planejar e arquitetar um sistema completo de redes sociais
 
 - React (Web)
 
-- Flutter (Mobile)
+- Kotlin (Mobile)
 
 ### Back
 
