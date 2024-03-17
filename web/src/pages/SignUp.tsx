@@ -3,10 +3,19 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useSignUp } from "@/hooks/useSignUp";
 import { Link } from "react-router-dom";
+import { PulseLoader } from "react-spinners";
 
 export function SignUpPage() {
-  const { signUpForm, submitData } = useSignUp()
+  const { signUpForm, submitData, isLoading } = useSignUp()
   const { register, handleSubmit } = signUpForm
+
+  const submitButton = isLoading
+    ? (<Button disabled>
+      <PulseLoader color="#fff" size={8} />
+    </Button>)
+    : (<Button>
+      <span>CADASTRAR</span>
+    </Button >)
 
   return (
     <main className="w-full md:w-1/2 p-3 rounded bg-white">
@@ -37,9 +46,7 @@ export function SignUpPage() {
         </Label>
         <Input type="password" {...register('password')} required />
 
-        <Button type="submit">
-          <span>CADASTRAR</span>
-        </Button>
+        {submitButton}
 
         <Link to="/auth/login" className="mt-3 text-center">
           <span className="text-xs text-sky-600">

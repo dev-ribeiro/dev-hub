@@ -20,7 +20,6 @@ export function useSignIn() {
     display(true);
     (async function () {
       try {
-        await new Promise(resolve => setTimeout(() => resolve(null), 5000));
         const user = await authService.login(data);
         saveDataInStorage<User>(USER_KEY, user);
         toastService.showSuccess('Login feito com sucesso');
