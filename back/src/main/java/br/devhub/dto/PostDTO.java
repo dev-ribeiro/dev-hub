@@ -1,5 +1,7 @@
 package br.devhub.dto;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import br.devhub.models.Post;
@@ -19,17 +21,18 @@ public class PostDTO extends BaseDTO<Post> {
     private User user;
     private String title;
     private String description;
-    private Date createdAt;
-    private Date updatedAt;
+    private String createdAt;
+    private String updatedAt;
     
     @Override
-    public Post toEntity() {
+    public Post toEntity() throws ParseException {
+    	var isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
     	var entity = new Post();
         entity.setId(id);
         entity.setTitle(title);
         entity.setDescription(description);
-        entity.setCreatedAt(createdAt);
-        entity.setUpdatedAt(updatedAt);
+        entity.setCreatedAt(isoFormat.parse(createdAt));
+        entity.setUpdatedAt(isoFormat.parse(updatedAt));
         entity.setUser(user);
     	return entity;
     }

@@ -1,6 +1,7 @@
 package br.devhub.dto;
 
 import java.io.Serializable;
+import java.text.ParseException;
 
 import org.springframework.data.domain.Sort.Direction;
 
@@ -19,7 +20,7 @@ public abstract class BaseDTO<T> implements Serializable {
 	
 	private static final long serialVersionUID = -3660767369020091229L;
 
-	T toEntity() {
+	T toEntity() throws ParseException {
 		return null;
 	}
 	

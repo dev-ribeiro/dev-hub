@@ -1,5 +1,6 @@
 package br.devhub.controllers;
 
+import java.text.ParseException;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,7 @@ public class PostController {
 	private final PostService postService;
 
 	@PostMapping(path = "create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ResponseDTO<Post>> createPost(@RequestBody PostDTO postDTO) {
+	public ResponseEntity<ResponseDTO<Post>> createPost(@RequestBody PostDTO postDTO) throws ParseException {
 		var result = new ResponseDTO<Post>(true, 1, postService.createPost(postDTO));
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}

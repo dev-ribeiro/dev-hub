@@ -1,5 +1,6 @@
 package br.devhub.services;
 
+import java.text.ParseException;
 import java.util.List;
 
 import org.springframework.context.annotation.Primary;
@@ -19,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 public class PostServiceImpl implements PostService {
 	private final PostRepository postRepository;
 
-	public Post createPost(PostDTO postDTO) {
+	public Post createPost(PostDTO postDTO) throws ParseException {
 		var entity = postDTO.toEntity();
 		return postRepository.save(entity);
 	}
